@@ -11,7 +11,7 @@ public class Main {
             System.out.println(i);
         }
         System.out.println();
-        //checkForHighestUnique(listOfNumbers);
+
         int highestUnique = checkForHighestUnique(listOfNumbers);
         if(highestUnique!=0) {
             System.out.println("Det högst unika är " + highestUnique);
@@ -24,27 +24,36 @@ public class Main {
     public static ArrayList<Integer> createNumbers() {
 
         ArrayList<Integer> listOfRandomNumbers = new ArrayList<>();
-        int MAX_NUMBERS = 5;
+        int MAX_NUMBERS = 100;
         for (int i = 0; i < MAX_NUMBERS; i++) {
-            listOfRandomNumbers.add((int) (Math.random() * 3) + 1);
+            listOfRandomNumbers.add((int) (Math.random() * 100) + 1);
         }
         return listOfRandomNumbers;
     }
 
+
     public static int checkForHighestUnique(ArrayList<Integer> listOfNumbers) {
 
-        Collections.sort(listOfNumbers, Collections.reverseOrder());
+        Collections.sort(listOfNumbers, Collections.reverseOrder()); //Sorterar listan i omvänd ordning
 
-        for(int i=0;i<listOfNumbers.size()-1;i++) {
-            if(listOfNumbers.get(i)!=listOfNumbers.get(i+1)) {
-                return listOfNumbers.get(i);
-            } else {
-                i= listOfNumbers.lastIndexOf(listOfNumbers.get(i));
+        for(int i=0; i<listOfNumbers.size(); ) {
+            if(i+1<listOfNumbers.size()) { //För att kunna jämföra med nästa tal i listan behöver det finnas plats kvar i listan
+                if (!listOfNumbers.get(i).equals(listOfNumbers.get(i + 1))) { //om talet på plats i inte är samma som på plats i+1 är det högsta unika talet.
+                    return listOfNumbers.get(i);
+                }
+                int currentNumber = listOfNumbers.get(i);
+                while (i < listOfNumbers.size() - 1 && listOfNumbers.get(i).equals(currentNumber)) {
+                    i++; //Om talet på plats i är samma som nästa tal ökar i med ett, fram tills talen inte är samma.
+                }
+            } else { //Om det är sista positionen i listan jämförs den med föregående tal för att kontrollera om det är unikt.
+                if(!listOfNumbers.get(i).equals(listOfNumbers.get(i-1))) {
+                    return listOfNumbers.get(i);
+                }
             }
         }
-
+        //Finns det inga unika returneras 0
         return 0;
     }
-    
+
 }
 
